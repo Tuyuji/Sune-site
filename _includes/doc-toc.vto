@@ -1,0 +1,10 @@
+{{ if toc && toc.length > 0 }}
+  <div class="toc-header">On this page</div>
+  <nav class="toc-nav">
+    {{ for item of toc }}
+      <a href="#{{ item.slug }}" class="toc-link toc-level-{{ item.level }}">
+        {{ item.text }}
+      </a>
+    {{ /for }}
+  </nav>
+{{ /if }}

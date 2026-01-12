@@ -1,0 +1,188 @@
+@import "tailwindcss";
+
+@property --tuyuji-color {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #c43586;
+}
+
+.gallery-item {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.content-card {
+  @apply bg-white rounded-xl shadow-lg p-6 w-[90vw] max-w-6xl mx-auto mb-8;
+}
+
+.playground-card {
+  @apply bg-white rounded-xl shadow-lg;
+  height: calc(
+    100vh - 5rem
+  );
+  margin: 0.5rem;
+  padding: 0.5rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.playground-card > * {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  overflow: auto;
+}
+
+html, body {
+  @apply h-full w-full;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+/* Desktop styles (default) */
+h1 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.9rem;
+}
+h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+}
+h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.7rem;
+}
+h5 {
+  font-size: 1rem;
+  margin-bottom: 0.6rem;
+}
+h6 {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Mobile styles */
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+  h2 {
+    font-size: 1.4rem;
+  }
+  h3 {
+    font-size: 1.2rem;
+  }
+  h4 {
+    font-size: 1.1rem;
+  }
+  h5 {
+    font-size: 1rem;
+  }
+  h6 {
+    font-size: 0.9rem;
+  }
+}
+
+.banner-nav a {
+  font-size: 0.9rem;
+  @media (max-width: 600px) {
+    font-size: 0.8rem;
+  }
+}
+
+main {
+  flex: 1;
+}
+
+/* Style for inline code */
+:not(pre) > code {
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  padding: 0.125rem 0.25rem;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.markdown h1 {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+  margin: 1rem 0 1rem;
+}
+
+.markdown h2 {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.75rem;
+}
+
+.markdown h3 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 600;
+  margin: 1.25rem 0 0.5rem;
+}
+
+.markdown h4 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  margin: 1rem 0 0.5rem;
+}
+
+.markdown p {
+  margin-bottom: 1rem;
+  line-height: 1.75;
+}
+
+.markdown ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.markdown ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.markdown blockquote {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  border-left: 4px solid #f0b429;
+  background-color: #fffbeb;
+  border-radius: 0.375rem;
+}
+
+.markdown blockquote > p {
+  margin-bottom: 0;
+  color: #92400e;
+}
+
+.markdown blockquote strong {
+  color: #92400e;
+  font-weight: 600;
+}

@@ -1,0 +1,8 @@
+pre > code {
+  font-size: 0.875rem;
+  font-size: clamp(0.75rem, 2vw, 1rem);
+}
+
+pre {
+  padding-bottom: 1rem;
+}

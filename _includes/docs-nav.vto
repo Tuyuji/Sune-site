@@ -1,0 +1,53 @@
+{{ function renderItem(item, depth, parentPath, currentUrl) }}
+  {{ set currentPath = parentPath ? `${parentPath}/${item.slug}` : item.slug }}
+
+  {{ if item.children?.length > 0 }}
+    {{ set isExpanded = false }}
+
+    {{# Check if this folder or any child contains the active URL #}}
+    {{ if item.data?.url == currentUrl }}
+      {{ set isExpanded = true }}
+    {{ /if }}
+
+    {{ for child of item.children }}
+      {{ if child.data?.url == currentUrl }}
+        {{ set isExpanded = true }}
+      {{ /if }}
+      {{# Check nested children #}}
+      {{ if child.children }}
+        {{ for nested of child.children }}
+          {{ if nested.data?.url == currentUrl }}
+            {{ set isExpanded = true }}
+          {{ /if }}
+        {{ /for }}
+      {{ /if }}
+    {{ /for }}
+
+    <div class="folder-container" data-folder-path="{{ currentPath }}">
+      <div class="folder-link" onclick="toggleFolder(this)">
+        <i class="fa-solid fa-chevron-right folder-toggle-icon" style="transform: rotate({{ if isExpanded }}90{{ else }}0{{ /if }}deg);"></i>
+        <i class="fa-regular fa-folder folder-icon"></i>
+        {{ item.data?.title || item.slug }}
+      </div>
+      <div class="folder-children {{ if isExpanded }}expanded{{ /if }}">
+        {{ for child of item.children }}
+          {{ renderItem(child, depth + 1, currentPath, currentUrl) }}
+        {{ /for }}
+      </div>
+    </div>
+  {{ else if item.data }}
+    <a
+      href="{{ item.data.url |> url }}"
+      class="doc-link {{ if depth }}ml-4 {{ /if }} {{ if item.data.url == currentUrl }}active-doc{{ /if }}"
+      data-path="{{ item.data.url }}"
+    >
+      <i class="fa-regular fa-file doc-icon"></i>
+      {{ item.data.title || item.slug }}
+    </a>
+  {{ /if }}
+{{ /function }}
+
+{{ set docsMenu = nav.menu("/docs/") }}
+{{ for item of docsMenu?.children || [] }}
+  {{ renderItem(item, 0, "", url) }}
+{{ /for }}

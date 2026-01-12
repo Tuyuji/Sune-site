@@ -1,0 +1,27 @@
+"Audio Graph Editor" [
+    icon "🎵"
+    classes.title "from-purple-50 to-pink-50 border-purple-100"
+    classes.text "text-purple-800"
+    desc "Visual node-based audio routing and processing system"
+]
+
+"Mixing" [
+    icon "🎚️"
+    classes.title "from-blue-50 to-cyan-50 border-blue-100"
+    classes.text "text-blue-800"
+    desc "Mixing capabilities with support for multiple audio buses and effects"
+]
+
+"Spatial Audio" [
+    icon "🌐"
+    classes.title "from-green-50 to-lime-50 border-green-100"
+    classes.text "text-green-800"
+    desc "3D audio positioning and environmental effects using Steam Audio"
+]
+
+"Made for O3DE" [
+    icon "🛠️"
+    classes.title "from-orange-50 to-amber-50 border-orange-100"
+    classes.text "text-orange-800"
+    desc "Seamless integration with Open 3D Engine"
+]

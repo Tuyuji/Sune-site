@@ -1,0 +1,19 @@
+{{>
+  const activeClass =
+  "after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gray-800"
+}}
+{{>
+  const linkClass =
+  "text-gray-800 hover:text-gray-600 font-medium transition-colors relative py-4"
+}}
+
+<header class="bg-white shadow-sm">
+  <nav class="max-w-7xl mx-auto px-4 flex gap-8 banner-nav">
+    {{ for name, item of banner }}
+      <a
+        href="{{ item.href |> url }}"
+        class="{{ linkClass }} {{ banner_location === name ? activeClass : '' }}"
+      >{{ item.display }}</a>
+    {{ /for }}
+  </nav>
+</header>

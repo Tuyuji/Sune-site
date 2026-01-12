@@ -1,0 +1,464 @@
+---
+layout: layout.vto
+---
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+<style>
+  .docs-container {
+    display: flex;
+    min-height: 70vh;
+    margin: 0 auto;
+    padding: clamp(0.5rem, 2vw, 1.25rem);
+    position: relative;
+  }
+  .docs-sidebar {
+    width: 300px;
+    background: #ffffff;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+    border-radius: 8px 0 0 8px;
+    height: calc(100vh - var(--banner-height) - 40px);
+    position: sticky;
+    top: calc(var(--banner-height) + 20px);
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    flex-shrink: 0;
+  }
+  .docs-content {
+    flex: 1;
+    min-width: 0; /* Prevents flex item from overflowing */
+    padding: clamp(1rem, 4vw, 2.5rem);
+    background: #ffffff;
+    position: relative;
+    z-index: 1;
+  }
+  .docs-toc {
+    width: 250px;
+    background: #ffffff;
+    padding: 20px;
+    border-left: 1px solid #ddd;
+    border-radius: 0 8px 8px 0;
+    height: calc(100vh - var(--banner-height) - 40px);
+    position: sticky;
+    top: calc(var(--banner-height) + 20px);
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    flex-shrink: 0;
+  }
+  .toc-header {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .toc-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .toc-link {
+    text-decoration: none;
+    color: #555;
+    font-size: 0.875rem;
+    padding: 4px 0;
+    transition: color 0.2s ease;
+    border-left: 2px solid transparent;
+    padding-left: 8px;
+  }
+  .toc-link:hover {
+    color: #007bff;
+  }
+  .toc-link.active {
+    color: #007bff;
+    border-left-color: #007bff;
+    font-weight: 500;
+  }
+  .toc-level-1 {
+    padding-left: 8px;
+  }
+  .toc-level-2 {
+    padding-left: 20px;
+    font-size: 0.8125rem;
+  }
+  .toc-level-3 {
+    padding-left: 32px;
+    font-size: 0.8125rem;
+  }
+  .toc-level-4 {
+    padding-left: 44px;
+    font-size: 0.75rem;
+  }
+  .mobile-nav-toggle {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    background: #007bff;
+    color: white;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease-in-out;
+  }
+  .mobile-nav-toggle:hover {
+    background: #0056b3;
+  }
+  .mobile-nav-toggle.active {
+    transform: rotate(90deg);
+  }
+  .mobile-nav-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+  }
+  @media (max-width: 1200px) {
+    .docs-toc {
+      display: none;
+    }
+  }
+  @media (max-width: 768px) {
+    .docs-container {
+      display: block;
+      padding: 0;
+    }
+    .docs-sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 1000;
+      transform: translateX(-100%);
+      border-radius: 0;
+      width: min(300px, 80vw) !important;
+      min-width: auto !important;
+      box-shadow: none;
+      visibility: hidden;
+      opacity: 0;
+      font-size: clamp(12px, 4.5vw, 18px);
+      transition:
+        transform 0.3s ease-in-out,
+        opacity 0.3s ease-in-out,
+        visibility 0s linear 0.3s;
+    }
+    .docs-sidebar.active {
+      transform: translateX(0);
+      box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
+      visibility: visible;
+      opacity: 1;
+      transition:
+        transform 0.3s ease-in-out,
+        opacity 0.3s ease-in-out,
+        visibility 0s linear;
+    }
+    .docs-toc {
+      display: block;
+      position: fixed;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 1000;
+      transform: translateX(100%);
+      border-radius: 0;
+      width: min(250px, 70vw) !important;
+      box-shadow: none;
+      visibility: hidden;
+      opacity: 0;
+      transition:
+        transform 0.3s ease-in-out,
+        opacity 0.3s ease-in-out,
+        visibility 0s linear 0.3s;
+    }
+    .docs-toc.active {
+      transform: translateX(0);
+      box-shadow: -2px 0 12px rgba(0, 0, 0, 0.1);
+      visibility: visible;
+      opacity: 1;
+      transition:
+        transform 0.3s ease-in-out,
+        opacity 0.3s ease-in-out,
+        visibility 0s linear;
+    }
+    .docs-toc .toc-header {
+      font-size: clamp(14px, 4vw, 18px);
+      margin-bottom: 16px;
+    }
+    .docs-toc .toc-link {
+      font-size: clamp(13px, 4vw, 16px);
+      padding: 6px 0;
+      line-height: 1.5;
+    }
+    .docs-toc .toc-level-1 {
+      padding-left: 12px;
+    }
+    .docs-toc .toc-level-2 {
+      padding-left: 24px;
+      font-size: clamp(12px, 3.5vw, 15px);
+    }
+    .docs-toc .toc-level-3 {
+      padding-left: 36px;
+      font-size: clamp(11px, 3.5vw, 14px);
+    }
+    .docs-toc .toc-level-4 {
+      padding-left: 48px;
+      font-size: clamp(11px, 3vw, 13px);
+    }
+    .docs-content {
+      border-radius: 0;
+      padding: clamp(1rem, 4vw, 1.5rem);
+      margin-bottom: 60px; /* Space for floating button */
+    }
+    .mobile-nav-toggle {
+      display: flex;
+    }
+    .mobile-nav-overlay.active {
+      display: block;
+      opacity: 1;
+    }
+  }
+  .docs-tree ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  .docs-tree li {
+    margin: 8px 0;
+  }
+  .docs-tree > a.doc-link {
+    padding: 4px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .docs-tree > a.doc-link:hover {
+    background-color: #f8f9fa;
+  }
+  .docs-tree a.doc-link,
+  .docs-tree .folder-link {
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .docs-tree a.doc-link:hover {
+    color: #007bff;
+  }
+  .docs-tree .folder-link {
+    font-weight: 600;
+    color: #555;
+    cursor: pointer;
+    padding: 4px 0;
+    transition: color 0.2s ease;
+  }
+  .docs-tree .folder-link:hover {
+    color: #007bff;
+  }
+  .docs-tree .folder-link:hover .folder-icon,
+  .docs-tree .folder-link:hover .folder-toggle-icon {
+    color: #007bff;
+  }
+  .folder-container {
+    padding: 4px 0;
+  }
+  .folder-toggle-icon {
+    font-size: 0.75rem;
+    color: #666;
+    transition: transform 0.2s ease;
+    transform: rotate(0deg);
+    width: 12px;
+    display: inline-block;
+  }
+  .folder-children {
+    margin-left: 16px;
+    margin-top: 0;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.3s ease, margin-top 0.3s ease;
+  }
+  .folder-children.expanded {
+    max-height: 2000px;
+    opacity: 1;
+    margin-top: 4px;
+  }
+  .doc-icon, .folder-icon {
+    color: #666;
+  }
+  .docs-tree a:hover .doc-icon {
+    color: #007bff;
+  }
+  .active-doc {
+    font-weight: bold;
+    color: #007bff !important;
+  }
+  .active-doc .doc-icon {
+    color: #007bff !important;
+  }
+</style>
+
+<script>
+  function toggleFolder(folderElement) {
+    const container = folderElement.parentElement;
+    const children = container.querySelector('.folder-children');
+    const icon = folderElement.querySelector('.folder-toggle-icon');
+
+    if (children) {
+      const isExpanded = children.classList.toggle('expanded');
+      icon.style.transform = isExpanded ? 'rotate(90deg)' : 'rotate(0deg)';
+    }
+  }
+
+  function expandPathToActive() {
+    // Find the active document link
+    const activeLink = document.querySelector('.doc-link.active-doc');
+    if (!activeLink) return;
+
+    // Traverse up the DOM tree and expand all parent folders
+    let parent = activeLink.parentElement;
+    while (parent) {
+      if (parent.classList.contains('folder-children')) {
+        parent.classList.add('expanded');
+
+        // Find and rotate the toggle icon
+        const container = parent.parentElement;
+        if (container) {
+          const icon = container.querySelector('.folder-toggle-icon');
+          if (icon) {
+            icon.style.transform = 'rotate(90deg)';
+          }
+        }
+      }
+      parent = parent.parentElement;
+    }
+  }
+
+  function toggleMobileNav() {
+    document.querySelector(".docs-sidebar").classList.toggle("active");
+    document.querySelector(".mobile-nav-overlay").classList.toggle("active");
+    document.querySelector(".mobile-nav-toggle").classList.toggle("active");
+  }
+
+  function toggleMobileToc() {
+    document.querySelector(".docs-toc").classList.toggle("active");
+    document.querySelector(".mobile-nav-overlay").classList.toggle("active");
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const overlay = document.querySelector(".mobile-nav-overlay");
+    overlay.addEventListener("click", () => {
+      const sidebar = document.querySelector(".docs-sidebar");
+      const toc = document.querySelector(".docs-toc");
+
+      if (sidebar.classList.contains("active")) {
+        toggleMobileNav();
+      } else if (toc.classList.contains("active")) {
+        toggleMobileToc();
+      }
+    });
+
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchEndX = 0;
+    let touchEndY = 0;
+
+    document.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    });
+
+    document.addEventListener("touchend", (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      touchEndY = e.changedTouches[0].screenY;
+      handleSwipe();
+    });
+
+    function handleSwipe() {
+      const swipeThreshold = 50;
+      const edgeZone = 80; // Increased edge detection zone
+      const swipeDistance = touchStartX - touchEndX;
+      const verticalDistance = Math.abs(touchStartY - touchEndY);
+      const toc = document.querySelector(".docs-toc");
+      const sidebar = document.querySelector(".docs-sidebar");
+
+      if (Math.abs(swipeDistance) > swipeThreshold && verticalDistance < 100) {
+        if (swipeDistance < -swipeThreshold && touchStartX < edgeZone && !sidebar.classList.contains("active")) {
+          toggleMobileNav();
+        }
+        else if (swipeDistance > swipeThreshold && touchStartX > window.innerWidth - edgeZone && !toc.classList.contains("active")) {
+          toggleMobileToc();
+        }
+        else if (swipeDistance > swipeThreshold && sidebar.classList.contains("active")) {
+          toggleMobileNav();
+        }
+        else if (swipeDistance < -swipeThreshold && toc.classList.contains("active")) {
+          toggleMobileToc();
+        }
+      }
+    }
+
+    const observerOptions = {
+      rootMargin: "-80px 0px -80% 0px",
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const id = entry.target.getAttribute("id");
+        const tocLink = document.querySelector(`.toc-link[href="#${id}"]`);
+
+        if (entry.isIntersecting && tocLink) {
+          document.querySelectorAll(".toc-link").forEach((link) => {
+            link.classList.remove("active");
+          });
+          tocLink.classList.add("active");
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll("h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]").forEach((heading) => {
+      observer.observe(heading);
+    });
+  });
+</script>
+
+<div class="mobile-nav-overlay"></div>
+<button
+  class="mobile-nav-toggle"
+  onclick="toggleMobileNav()"
+  aria-label="Toggle navigation"
+>
+  <i class="fas fa-bars"></i>
+</button>
+
+<div class="docs-container">
+  <nav class="docs-sidebar">
+    <div class="docs-tree">
+      {{ include "docs-nav.vto" }}
+    </div>
+  </nav>
+  <main class="markdown docs-content">
+    {{ content }}
+  </main>
+  <aside class="docs-toc">
+    {{ include "doc-toc.vto" }}
+  </aside>
+</div>

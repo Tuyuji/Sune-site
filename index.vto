@@ -1,0 +1,48 @@
+---
+layout: layout.vto
+banner_location: home
+---
+<div class="flex flex-col items-center pt-12">
+    <div class="text-center mb-12 px-4">
+        <div class="inline-block bg-white rounded-2xl px-4 py-4 shadow-lg">
+            <img src="{{ '/logo.png' |> url }}" alt="Sune Logo" class="w-32 h-32 mx-auto mb-4" />
+            <h1 class="text-6xl font-bold" style="margin-bottom: 0; background: linear-gradient(to right, #00a896, #00b8c4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Sune</h1>
+        </div>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto mt-4">
+            An audio engine for O3DE powered by LabSound
+        </p>
+    </div>
+
+    <!-- Status Notice -->
+    <div class="content-card bg-yellow-50 border-l-4 border-yellow-400">
+        <div class="flex items-start">
+            <span class="text-2xl mr-3">🚧</span>
+            <div>
+                <h3 class="font-semibold text-yellow-800 mb-1">Work in Progress</h3>
+                <p class="text-yellow-700">Sune is actively under development. Some features may be incomplete or subject to change.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="content-card">
+        <h2 class="text-3xl font-bold mb-6 text-gray-800">Key Features</h2>
+
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+            {{ for title, data of keyfeatures }}
+                <div class="p-6 bg-gradient-to-br rounded-lg border {{data.classes.title}}">
+                    <h3 class="text-xl font-semibold mb-3 {{data.classes.text}}">{{data.icon}} {{title}}</h3>
+                    <p class="text-gray-700">{{data.desc}}</p>
+                </div>
+            {{ /for }}
+        </div>
+
+        <!-- Quick Start -->
+        <div class="border-t border-gray-200 pt-6">
+
+            <a href="{{ '/docs/' |> url }}" class="inline-block text-white font-semibold px-6 py-3 rounded-lg transition-all shadow-md hover:shadow-lg" style="background: linear-gradient(to right, #00a896, #00b8c4);" onmouseover="this.style.background='linear-gradient(to right, #009684, #00a0ac)'" onmouseout="this.style.background='linear-gradient(to right, #00a896, #00b8c4)'">
+                Read the Documentation →
+            </a>
+        </div>
+    </div>
+</div>

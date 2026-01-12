@@ -1,0 +1,9 @@
+"home" [
+    display "Home"
+    href "/"
+]
+
+"docs" [
+    display "Docs"
+    href "/docs/"
+]
